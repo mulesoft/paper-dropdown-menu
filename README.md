@@ -35,7 +35,9 @@ Applications can listen for the `iron-select` and `iron-deselect` events
 to react when options are selected and deselected.
 
 ### Styling
+
 The following custom properties and mixins are also available for styling:
+
 Custom property | Description | Default
 ----------------|-------------|----------
 `--paper-dropdown-menu` | A mixin that is applied to the element host | `{}`
