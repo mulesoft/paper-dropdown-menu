@@ -12,7 +12,7 @@ cache:
   - node_modules
 branches:
   only:
-  - stage
+  - master
   - develop
 env:
   global:
