@@ -22,10 +22,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/advanced-rest-client/paper-dropdown-menu.git"
+    "url": "git://github.com/mulesoft/paper-dropdown-menu.git"
   },
   "bugs": {
-    "url": "https://github.com/advanced-rest-client/paper-dropdown-menu/issues",
+    "url": "https://github.com/mulesoft/paper-dropdown-menu/issues",
     "email": "arc@mulesoft.com"
   }
 }
