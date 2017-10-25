@@ -190,10 +190,12 @@ Custom property | Description | Default
 
     :host([disabled]) #input {
       border-bottom: 1px dashed var(--paper-dropdown-menu-color, --secondary-text-color);
+      @apply --paper-dropdown-disabled-input;
     }
 
     :host([invalid]) #input {
       border-bottom: 2px solid var(--paper-dropdown-error-color, --error-color);
+      @apply --paper-dropdown-invalid-input;
     }
 
     label {
