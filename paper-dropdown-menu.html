@@ -37,6 +37,7 @@ item is displayed in the control. If no item is selected, the `label` is
 displayed instead.
 
 Example:
+
     <paper-dropdown-menu-light label="Your favourite pastry">
       <paper-listbox class="dropdown-content">
         <paper-item>Croissant</paper-item>
@@ -439,7 +440,6 @@ Custom property | Description | Default
        * @param {CustomEvent} event An `iron-select` event.
        */
       _onIronSelect: function(event) {
-        console.log('_onIronSelect');
         this._setSelectedItem(event.detail.item);
       },
       /**
