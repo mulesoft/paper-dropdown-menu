@@ -1,23 +1,12 @@
 <!doctype html>
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 <html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
     <script src="../../iron-test-helpers/test-helpers.js"></script>
     <script src="../../iron-test-helpers/mock-interactions.js"></script>
-
     <link rel="import" href="../../paper-listbox/paper-listbox.html">
     <link rel="import" href="../../paper-item/paper-item.html">
     <link rel="import" href="../paper-dropdown-menu.html">
@@ -27,7 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <test-fixture id="TrivialDropdownMenu">
     <template>
       <paper-dropdown-menu no-animations>
-        <paper-listbox class="dropdown-content">
+        <paper-listbox slot="dropdown-content">
           <paper-item>Foo</paper-item>
           <paper-item>Bar</paper-item>
         </paper-listbox>
@@ -38,7 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="PreselectedDropdownMenu">
     <template>
       <paper-dropdown-menu no-animations>
-        <paper-listbox class="dropdown-content" selected="1">
+        <paper-listbox slot="dropdown-content" selected="1">
           <paper-item>Foo</paper-item>
           <paper-item>Bar</paper-item>
         </paper-listbox>
@@ -49,7 +38,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="LabelsDropdownMenu">
     <template>
       <paper-dropdown-menu no-animations>
-        <paper-listbox class="dropdown-content">
+        <paper-listbox slot="dropdown-content">
           <paper-item label="Foo label property">Foo textContent</paper-item>
           <paper-item label="Foo label attribute">Foo textContent</paper-item>
           <paper-item>Foo textContent</paper-item>
@@ -61,126 +50,165 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script>
     /* global fixture, expect, MockInteractions */
     function runAfterOpen(menu, callback) {
-      menu.$.menuButton.$.dropdown.addEventListener('iron-overlay-opened', function() {
+      menu.$.menuButton.$.dropdown.addEventListener('iron-overlay-opened', () => {
         Polymer.Base.async(callback, 1);
       });
-      MockInteractions.tap(menu);
+      setTimeout(() => {
+        MockInteractions.tap(menu);
+      }, 32);
     }
 
-    suite('<paper-dropdown-menu>', function() {
-      var dropdownMenu;
-      var content;
-      setup(function() {
+    suite('<paper-dropdown-menu>', () => {
+      let dropdownMenu;
+      let content;
+      setup((done) => {
         dropdownMenu = fixture('TrivialDropdownMenu');
-        content = Polymer.dom(dropdownMenu).querySelector('.dropdown-content');
+        flush(() => {
+          content = dropdownMenu.querySelector('[slot="dropdown-content"]');
+          done();
+        });
       });
-      test('opens when tapped', function(done) {
-        var contentRect = content.getBoundingClientRect();
+
+      test('opens when tapped', (done) => {
+        let contentRect = content.getBoundingClientRect();
         expect(contentRect.width).to.be.equal(0);
         expect(contentRect.height).to.be.equal(0);
-        runAfterOpen(dropdownMenu, function() {
+        runAfterOpen(dropdownMenu, () => {
+          expect(dropdownMenu.opened).to.be.equal(true, 'Menu is opened');
           contentRect = content.getBoundingClientRect();
           expect(dropdownMenu.opened).to.be.equal(true);
           expect(contentRect.width).to.be.greaterThan(0);
           expect(contentRect.height).to.be.greaterThan(0);
           done();
         });
-        expect(dropdownMenu.opened).to.be.equal(true);
       });
-      test('closes when an item is activated', function(done) {
-        runAfterOpen(dropdownMenu, function() {
-          var firstItem = Polymer.dom(content).querySelector('paper-item');
+
+      test('closes when an item is activated', (done) => {
+        runAfterOpen(dropdownMenu, () => {
+          const firstItem = content.querySelector('paper-item');
           MockInteractions.tap(firstItem);
-          Polymer.Base.async(function() {
+          Polymer.Base.async(() => {
             expect(dropdownMenu.opened).to.be.equal(false);
             done();
           });
         });
       });
-      test('sets selected item to the activated item', function(done) {
-        runAfterOpen(dropdownMenu, function() {
-          var firstItem = Polymer.dom(content).querySelector('paper-item');
+      test('sets selected item to the activated item', (done) => {
+        runAfterOpen(dropdownMenu, () => {
+          const firstItem = Polymer.dom(content).querySelector('paper-item');
           MockInteractions.tap(firstItem);
-          Polymer.Base.async(function() {
+          Polymer.Base.async(() => {
             expect(dropdownMenu.selectedItem).to.be.equal(firstItem);
             done();
           });
         });
       });
-      suite('when a value is preselected', function() {
-        setup(function() {
+
+      suite('when a value is preselected', () => {
+        let content;
+        setup((done) => {
           dropdownMenu = fixture('PreselectedDropdownMenu');
+          flush(() => {
+            content = dropdownMenu.querySelector('[slot="dropdown-content"]');
+            done();
+          });
         });
-        test('the input area shows the correct selection', function() {
-          Polymer.dom.flush();
-          var secondItem = Polymer.dom(dropdownMenu).querySelectorAll('paper-item')[1];
+
+        test('the input area shows the correct selection', () => {
+          const secondItem = content.querySelectorAll('paper-item')[1];
           expect(dropdownMenu.selectedItem).to.be.equal(secondItem);
         });
       });
-      suite('deselecting', function() {
-        var menu;
-        setup(function() {
+
+      suite('deselecting', () => {
+        let menu;
+        setup((done) => {
           dropdownMenu = fixture('PreselectedDropdownMenu');
-          menu = Polymer.dom(dropdownMenu).querySelector('.dropdown-content');
+          flush(() => {
+            menu = dropdownMenu.querySelector('[slot="dropdown-content"]');
+            done();
+          });
         });
-        test('an `iron-deselect` event clears the current selection', function() {
-          Polymer.dom.flush();
+        test('an `iron-deselect` event clears the current selection', () => {
           menu.selected = null;
           expect(dropdownMenu.selectedItem).to.be.equal(null);
         });
       });
-      suite('validation', function() {
-        var menu;
-        test('a non required dropdown is valid regardless of its selection', function() {
-          var dropdownMenu = fixture('TrivialDropdownMenu');
-          menu = Polymer.dom(dropdownMenu).querySelector('.dropdown-content');
-          // no selection.
-          expect(dropdownMenu.validate()).to.be.true;
-          expect(dropdownMenu.invalid).to.be.false;
-          expect(dropdownMenu.value).to.not.be.ok;
-          // some selection.
-          menu.selected = 1;
-          expect(dropdownMenu.validate()).to.be.true;
-          expect(dropdownMenu.invalid).to.be.false;
-          expect(dropdownMenu.value).to.be.equal('Bar');
+
+      suite('validation', () => {
+        let menu;
+
+        test('a non required dropdown is valid regardless of its selection', (done) => {
+          const dropdownMenu = fixture('TrivialDropdownMenu');
+          flush(() => {
+            menu = dropdownMenu.querySelector('[slot="dropdown-content"]');
+            // no selection.
+            expect(dropdownMenu.validate()).to.be.true;
+            expect(dropdownMenu.invalid).to.be.false;
+            expect(dropdownMenu.value).to.not.be.ok;
+            // some selection.
+            menu.selected = 1;
+            expect(dropdownMenu.validate()).to.be.true;
+            expect(dropdownMenu.invalid).to.be.false;
+            expect(dropdownMenu.value).to.be.equal('Bar');
+            done();
+          });
         });
-        test('a required dropdown is invalid without a selection', function() {
-          var dropdownMenu = fixture('TrivialDropdownMenu');
+
+        test('a required dropdown is invalid without a selection', (done) => {
+          const dropdownMenu = fixture('TrivialDropdownMenu');
           dropdownMenu.required = true;
-          // no selection.
-          expect(dropdownMenu.validate()).to.be.false;
-          expect(dropdownMenu.invalid).to.be.true;
-          expect(dropdownMenu.value).to.not.be.ok;
+          flush(() => {
+            // no selection.
+            expect(dropdownMenu.validate()).to.be.false;
+            expect(dropdownMenu.invalid).to.be.true;
+            expect(dropdownMenu.value).to.not.be.ok;
+            done();
+          });
         });
-        test('a required dropdown is valid with a selection', function() {
-          var dropdownMenu = fixture('PreselectedDropdownMenu');
-          Polymer.dom.flush();
-          dropdownMenu.required = true;
-          expect(dropdownMenu.validate()).to.be.true;
-          expect(dropdownMenu.invalid).to.be.false;
-          expect(dropdownMenu.value).to.be.equal('Bar');
+
+        test('a required dropdown is valid with a selection', (done) => {
+          const dropdownMenu = fixture('PreselectedDropdownMenu');
+          flush(() => {
+            dropdownMenu.required = true;
+            expect(dropdownMenu.validate()).to.be.true;
+            expect(dropdownMenu.invalid).to.be.false;
+            expect(dropdownMenu.value).to.be.equal('Bar');
+            done();
+          });
         });
       });
-      suite('selectedItemLabel', function() {
-        test('label property', function() {
-          var dropdownMenu = fixture('LabelsDropdownMenu');
-          var menu = Polymer.dom(dropdownMenu).querySelector('.dropdown-content');
+      suite('selectedItemLabel', () => {
+        test('label property', (done) => {
+          const dropdownMenu = fixture('LabelsDropdownMenu');
+          const menu = dropdownMenu.querySelector('[slot="dropdown-content"]');
           menu.selected = 0;
-          //Fake a label property since paper-item doesn't have one
-          dropdownMenu.selectedItem.label = dropdownMenu.selectedItem.getAttribute('label');
-          expect(dropdownMenu.selectedItemLabel).to.be.equal('Foo label property');
+          flush(() => {
+            //Fake a label property since paper-item doesn't have one
+            dropdownMenu.selectedItem.label = dropdownMenu.selectedItem.getAttribute('label');
+            expect(dropdownMenu.selectedItemLabel).to.be.equal('Foo label property');
+            done();
+          });
         });
-        test('label attribute', function() {
-          var dropdownMenu = fixture('LabelsDropdownMenu');
-          var menu = Polymer.dom(dropdownMenu).querySelector('.dropdown-content');
+
+        test('label attribute', (done) => {
+          const dropdownMenu = fixture('LabelsDropdownMenu');
+          const menu = dropdownMenu.querySelector('[slot="dropdown-content"]');
           menu.selected = 1;
-          expect(dropdownMenu.selectedItemLabel).to.be.equal('Foo label attribute');
+          flush(() => {
+            expect(dropdownMenu.selectedItemLabel).to.be.equal('Foo label attribute');
+            done();
+          });
         });
-        test('textContent', function() {
-          var dropdownMenu = fixture('LabelsDropdownMenu');
-          var menu = Polymer.dom(dropdownMenu).querySelector('.dropdown-content');
+
+        test('textContent', (done) => {
+          const dropdownMenu = fixture('LabelsDropdownMenu');
+          const menu = dropdownMenu.querySelector('[slot="dropdown-content"]');
           menu.selected = 2;
-          expect(dropdownMenu.selectedItemLabel).to.be.equal('Foo textContent');
+          flush(() => {
+            expect(dropdownMenu.selectedItemLabel).to.be.equal('Foo textContent');
+            done();
+          });
         });
       });
     });
