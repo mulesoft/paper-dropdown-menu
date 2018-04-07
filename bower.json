@@ -18,9 +18,8 @@
     "iron-a11y-keys-behavior": "PolymerElements/iron-a11y-keys-behavior#^2.1.0",
     "iron-icon": "PolymerElements/iron-icon#^2.1.0",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^2.2.0",
-    "iron-validatable-behavior": "PolymerElements/iron-validatable-behavior#^2.1.0",
+    "iron-validatable-behavior": "advanced-rest-client/iron-validatable-behavior#2.0.0-preview",
     "paper-behaviors": "PolymerElements/paper-behaviors#^2.1.0",
-    "paper-input": "PolymerElements/paper-input#^2.2.0",
     "paper-menu-button": "PolymerElements/paper-menu-button#^2.1.0",
     "anypoint-styles": "advanced-rest-client/anypoint-styles#2.0.0-preview"
   },
@@ -40,5 +39,8 @@
     "bower_components",
     "test",
     "tasks"
-  ]
+  ],
+  "resolutions": {
+    "iron-validatable-behavior": "2.0.0-preview"
+  }
 }
