@@ -4,6 +4,8 @@ Copyright 2017 Mulesoft.
 All rights reserved.
 -->
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../shadycss/apply-shim.html">
+<link rel="import" href="../polymer/lib/elements/custom-style.html">
 <link rel="import" href="../polymer/lib/utils/render-status.html">
 <link rel="import" href="../shadycss/apply-shim.html">
 <link rel="import" href="../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
@@ -15,6 +17,15 @@ All rights reserved.
 <link rel="import" href="../anypoint-styles/typography.html">
 <link rel="import" href="../anypoint-styles/colors.html">
 <link rel="import" href="paper-dropdown-menu-icons.html">
+<custom-style>
+  <style is="custom-style">
+    html {
+      --paper-listbox: {
+        padding: 0;
+      };
+    }
+  </style>
+</custom-style>
 <dom-module id="paper-dropdown-menu">
   <template>
     <style>
@@ -65,13 +76,14 @@ All rights reserved.
 
     :host([opened][vertical-align="bottom"]) {
       border-bottom-color: var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
-      border-top-color: transparent;
+      border-top: none !important;
 
       --paper-menu-button-content: {
         border-top: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
         border-right: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
         border-left: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
         border-bottom: 0px solid transparent;
+        top: 2px;
       };
     }
 
@@ -93,7 +105,6 @@ All rights reserved.
       box-sizing: border-box;
       position: relative;
       width: 100%;
-      padding: 16px 0 8px 0;
       padding-top: 8px;
       @apply --paper-dropdown-trigger;
     }
@@ -103,36 +114,37 @@ All rights reserved.
       opacity: var(--paper-dropdown-menu-disabled-opacity, 0.33);
     }
 
-    #input {
+    .fake-input {
       @apply --anypoint-font-header5;
       @apply --anypoint-font-common-nowrap;
       line-height: 1.5;
+      margin: 0;
       color: var(--paper-dropdown-menu-color, var(--primary-text-color));
       width: 100%;
       box-sizing: border-box;
-      padding: 0 20px 0 16px;
+      padding: 0 20px 0 10px;
       /* Right padding so that text doesn't overlap the icon */
       outline: none;
       @apply --paper-dropdown-menu-input;
     }
 
-    #menuButton {
+    paper-menu-button {
       --shadow-elevation-2dp: {
         /* This is intentionally empty */
       };
     }
 
-    #input:dir(rtl) {
+    .fake-input:dir(rtl) {
       padding-right: 0px;
       padding-left: 20px;
     }
 
-    :host([disabled]) #input {
+    :host([disabled]) .fake-input {
       border-bottom: 1px dashed var(--paper-dropdown-menu-color, var(--secondary-text-color));
       @apply --paper-dropdown-disabled-input;
     }
 
-    :host([invalid]) #input {
+    :host([invalid]) .fake-input {
       border-bottom: 2px solid var(--paper-dropdown-error-color, var(--error-color));
       @apply --paper-dropdown-invalid-input;
     }
@@ -142,14 +154,15 @@ All rights reserved.
       @apply --anypoint-font-common-nowrap;
       display: block;
       position: absolute;
-      bottom: 0;
-      left: 12px;
-      right: 4px;
+      left: 10px;
+      right: 5px;
       top: 8px;
       box-sizing: border-box;
+      margin: 0;
       padding-right: 20px;
       /* Right padding so that text doesn't overlap the icon */
       text-align: left;
+      z-index: 110;
       color: var(--paper-dropdown-menu-color, var(--secondary-text-color));
       @apply --paper-dropdown-menu-label;
     }
@@ -170,9 +183,9 @@ All rights reserved.
     iron-icon {
       position: absolute;
       right: 0px;
-      bottom: 8px;
+      top: 8px;
       margin-top: 0px;
-      /* The container has an 8px bottom padding */
+      z-index: 110;
       @apply --anypoint-font-header5;
       color: var(--disabled-text-color);
       @apply --paper-dropdown-menu-icon;
@@ -192,7 +205,6 @@ All rights reserved.
     <!-- this div fulfills an a11y requirement for combobox, do not remove -->
     <span role="button"></span>
     <paper-menu-button
-      id="menuButton"
       vertical-align="[[verticalAlign]]"
       horizontal-align="[[horizontalAlign]]"
       vertical-offset="32"
@@ -206,7 +218,7 @@ All rights reserved.
       allow-outside-scroll="[[allowOutsideScroll]]">
       <div class="dropdown-trigger" slot="dropdown-trigger">
         <label class$="[[_computeLabelClass(hasContent, opened)]]">[[label]]</label>
-        <div id="input" tabindex="-1">&nbsp;</div>
+        <div id="input" class="fake-input" tabindex="-1">&nbsp;</div>
         <iron-icon icon="paper-dropdown-menu:arrow-drop-down"></iron-icon>
       </div>
       <slot name="dropdown-content" slot="dropdown-content"></slot>
@@ -391,6 +403,33 @@ All rights reserved.
         'esc': 'close'
       };
     }
+    /**
+     * A reference to `paper-menu-button` element
+     * @return {HTMLElement}
+     */
+    get menuButton() {
+      if (!this.$) {
+        this.$ = {};
+      }
+      if (!this.$.menuButton) {
+        this.$.menuButton = this.shadowRoot.querySelector('paper-menu-button');
+      }
+      return this.$.menuButton;
+    }
+
+    /**
+     * A reference to fake input container element
+     * @return {HTMLElement}
+     */
+    get input() {
+      if (!this.$) {
+        this.$ = {};
+      }
+      if (!this.$.input) {
+        this.$.input = this.shadowRoot.querySelector('fake-input');
+      }
+      return this.$.input;
+    }
 
     constructor() {
       super();
@@ -455,13 +494,13 @@ All rights reserved.
      * Show the dropdown content.
      */
     open() {
-      this.$.menuButton.open();
+      this.menuButton.open();
     }
     /**
      * Hide the dropdown content.
      */
     close() {
-      this.$.menuButton.close();
+      this.menuButton.close();
     }
     /**
      * A handler that is called when `iron-select` is fired.
@@ -514,12 +553,13 @@ All rights reserved.
       const e = this.contentElement;
       if (e) {
         e.setAttribute('aria-expanded', openState);
+        const input = this.input;
         if (!openState || openState === 'false') {
-          if (this.$.input && this.value && !this.$.input.textContent.trim()) {
-            this.$.input.textContent = this.value;
+          if (input && this.value && !input.textContent.trim()) {
+            input.textContent = this.value;
           }
         } else {
-          this.$.input.innerHTML = '&nbsp;';
+          input.innerHTML = '&nbsp;';
         }
       }
       this.updateStyles();
@@ -531,8 +571,9 @@ All rights reserved.
 
     _valueChanged() {
       // Only update if it's actually different.
-      if (this.$.input && this.$.input.textContent !== this.value) {
-        this.$.input.textContent = this.value;
+      const input = this.input;
+      if (input && input.textContent !== this.value) {
+        input.textContent = this.value;
       }
       this._setHasContent(!!this.value);
     }

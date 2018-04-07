@@ -16,6 +16,23 @@
   <link rel="import" href="../paper-dropdown-menu.html">
   <custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
+    :root {
+      --paper-item-min-height: 48px;
+      --paper-item: {
+        padding: 0px 10px;
+        border-left: 2px transparent solid;
+        border-right: 2px transparent solid;
+      };
+    }
+
+    paper-item:hover {
+      --paper-item: {
+        padding: 0px 10px;
+        color: var(--anypoint-color-coreBlue3);
+        border-left: 2px var(--anypoint-color-coreBlue3) solid;
+        border-right: 2px var(--anypoint-color-coreBlue3) solid;
+      };
+    }
     </style>
   </custom-style>
 </head>
@@ -26,24 +43,24 @@
       <template>
         <paper-dropdown-menu label="Dinosaurs">
           <paper-listbox slot="dropdown-content">
-            <paper-item>allosaurus</paper-item>
-            <paper-item>brontosaurus</paper-item>
-            <paper-item>carcharodontosaurus</paper-item>
-            <paper-item>diplodocus</paper-item>
+            <paper-item>Allosaurus</paper-item>
+            <paper-item>Brontosaurus</paper-item>
+            <paper-item>Carcharodontosaurus</paper-item>
+            <paper-item>Diplodocus</paper-item>
           </paper-listbox>
         </paper-dropdown-menu>
       </template>
     </demo-snippet>
 
     <h4>You can pre-select a value using the <i>selected</i> attribute</h4>
-    <demo-snippet class="centered-demo">
+    <demo-snippet>
       <template>
         <paper-dropdown-menu label="Dinosaurs">
           <paper-listbox slot="dropdown-content" selected="1">
-            <paper-item>allosaurus</paper-item>
-            <paper-item>brontosaurus</paper-item>
-            <paper-item>carcharodontosaurus</paper-item>
-            <paper-item>diplodocus</paper-item>
+            <paper-item>Allosaurus</paper-item>
+            <paper-item>Brontosaurus</paper-item>
+            <paper-item>Carcharodontosaurus</paper-item>
+            <paper-item>Diplodocus</paper-item>
           </paper-listbox>
         </paper-dropdown-menu>
       </template>
@@ -69,6 +86,20 @@
     <demo-snippet class="centered-demo">
       <template>
         <paper-dropdown-menu label="Disabled dinosaurs" disabled>
+          <paper-listbox slot="dropdown-content">
+            <paper-item>allosaurus</paper-item>
+            <paper-item>brontosaurus</paper-item>
+            <paper-item>carcharodontosaurus</paper-item>
+            <paper-item>diplodocus</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </template>
+    </demo-snippet>
+
+    <h4>Right-to-left language</h4>
+    <demo-snippet class="centered-demo">
+      <template>
+        <paper-dropdown-menu label="Disabled dinosaurs" dir="rtl">
           <paper-listbox slot="dropdown-content">
             <paper-item>allosaurus</paper-item>
             <paper-item>brontosaurus</paper-item>
