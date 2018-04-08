@@ -58,8 +58,7 @@ All rights reserved.
 
       --paper-menu-button-content: {
         border-bottom: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
-        border-left: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
-        border-right: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
+        top: 9px !important;
       };
     }
 
@@ -77,13 +76,10 @@ All rights reserved.
     :host([opened][vertical-align="bottom"]) {
       border-bottom-color: var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
       border-top: none !important;
-
       --paper-menu-button-content: {
         border-top: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
-        border-right: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
-        border-left: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
         border-bottom: 0px solid transparent;
-        top: 2px;
+        top: -8px !important;
       };
     }
 
@@ -93,11 +89,6 @@ All rights reserved.
       @apply --paper-dropdown-menu-button;
     }
 
-    iron-icon {
-      color: var(--disabled-text-color);
-      @apply --paper-dropdown-menu-icon;
-    }
-
     /**
      * All of these styles below are for styling the fake-input display
      */
@@ -105,7 +96,6 @@ All rights reserved.
       box-sizing: border-box;
       position: relative;
       width: 100%;
-      padding-top: 8px;
       @apply --paper-dropdown-trigger;
     }
 
@@ -115,14 +105,13 @@ All rights reserved.
     }
 
     .fake-input {
-      @apply --anypoint-font-header5;
+      @apply --anypoint-font-body;
       @apply --anypoint-font-common-nowrap;
       line-height: 1.5;
-      margin: 0;
       color: var(--paper-dropdown-menu-color, var(--primary-text-color));
       width: 100%;
       box-sizing: border-box;
-      padding: 0 20px 0 10px;
+      padding: 5px 20px 5px 10px;
       /* Right padding so that text doesn't overlap the icon */
       outline: none;
       @apply --paper-dropdown-menu-input;
@@ -150,7 +139,7 @@ All rights reserved.
     }
 
     label {
-      @apply --anypoint-font-header5;
+      @apply --anypoint-font-body;
       @apply --anypoint-font-common-nowrap;
       display: block;
       position: absolute;
@@ -182,9 +171,10 @@ All rights reserved.
 
     iron-icon {
       position: absolute;
-      right: 0px;
-      top: 8px;
-      margin-top: 0px;
+      right: 5px;
+      top: 4px;
+      margin-bottom: 0;
+
       z-index: 110;
       @apply --anypoint-font-header5;
       color: var(--disabled-text-color);
