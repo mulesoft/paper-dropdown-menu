@@ -23,15 +23,32 @@
         border-left: 2px transparent solid;
         border-right: 2px transparent solid;
       };
-    }
-
-    paper-item:hover {
       --paper-item: {
+        padding: 0px 10px;
+        border-left: 2px transparent solid;
+        border-right: 2px transparent solid;
+        cursor: pointer;
+        border-left: 2px solid var(--anypoint-color-aluminum4);
+        border-right: 2px solid var(--anypoint-color-aluminum4);
+      };
+      --paper-item-hover: {
         padding: 0px 10px;
         color: var(--anypoint-color-coreBlue3);
         border-left: 2px var(--anypoint-color-coreBlue3) solid;
         border-right: 2px var(--anypoint-color-coreBlue3) solid;
       };
+    }
+    paper-item:hover {
+      @apply --paper-item-hover;
+    }
+
+    .color {
+      /* background-color: red;
+      color: #fff; */
+    }
+
+    .color2 {
+      /* background-color: #2196F3; */
     }
     </style>
   </custom-style>
@@ -41,8 +58,8 @@
     <h4>This is a plain paper-dropdown-menu</h4>
     <demo-snippet>
       <template>
-        <paper-dropdown-menu label="Dinosaurs">
-          <paper-listbox slot="dropdown-content">
+        <paper-dropdown-menu class="color" label="Dinosaurs">
+          <paper-listbox slot="dropdown-content" class="color2">
             <paper-item>Allosaurus</paper-item>
             <paper-item>Brontosaurus</paper-item>
             <paper-item>Carcharodontosaurus</paper-item>
@@ -55,8 +72,8 @@
     <h4>You can pre-select a value using the <i>selected</i> attribute</h4>
     <demo-snippet>
       <template>
-        <paper-dropdown-menu label="Dinosaurs">
-          <paper-listbox slot="dropdown-content" selected="1">
+        <paper-dropdown-menu class="color" label="Dinosaurs">
+          <paper-listbox slot="dropdown-content" selected="1" class="color2">
             <paper-item>Allosaurus</paper-item>
             <paper-item>Brontosaurus</paper-item>
             <paper-item>Carcharodontosaurus</paper-item>
@@ -70,8 +87,8 @@
     <h4>You can change the direction in which the menu opens</h4>
     <demo-snippet class="centered-demo">
       <template>
-        <paper-dropdown-menu label="Upwards and to the left! With long label" vertical-align="bottom" horizontal-align="left">
-          <paper-listbox slot="dropdown-content">
+        <paper-dropdown-menu label="Upwards and to the left! With long label" vertical-align="bottom" horizontal-align="left" class="color">
+          <paper-listbox slot="dropdown-content" class="color2">
             <paper-item>allosaurus</paper-item>
             <paper-item>brontosaurus</paper-item>
             <paper-item>carcharodontosaurus</paper-item>

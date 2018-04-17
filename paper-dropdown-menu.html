@@ -39,6 +39,7 @@ All rights reserved.
       display: inline-block;
       position: relative;
       text-align: left;
+      cursor: pointer;
 
       border-right: 2px solid transparent;
       border-left: 2px solid transparent;
@@ -58,7 +59,7 @@ All rights reserved.
 
       --paper-menu-button-content: {
         border-bottom: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
-        top: 9px !important;
+        top: 20px !important;
       };
     }
 
@@ -79,8 +80,15 @@ All rights reserved.
       --paper-menu-button-content: {
         border-top: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
         border-bottom: 0px solid transparent;
-        top: -8px !important;
+        top: -18px !important;
       };
+    }
+
+    :host(:hover) label,
+    :host(:hover) .fake-input,
+    :host(:hover:not([opened])) .dropdown-trigger > iron-icon {
+      color: var(--anypoint-color-primary);
+      cursor: pointer;
     }
 
     paper-menu-button {
@@ -111,7 +119,7 @@ All rights reserved.
       color: var(--paper-dropdown-menu-color, var(--primary-text-color));
       width: 100%;
       box-sizing: border-box;
-      padding: 5px 20px 5px 10px;
+      padding: 10px 20px 10px 10px;
       /* Right padding so that text doesn't overlap the icon */
       outline: none;
       @apply --paper-dropdown-menu-input;
@@ -145,7 +153,7 @@ All rights reserved.
       position: absolute;
       left: 10px;
       right: 5px;
-      top: 8px;
+      top: 11px;
       box-sizing: border-box;
       margin: 0;
       padding-right: 20px;
@@ -170,13 +178,12 @@ All rights reserved.
     }
 
     iron-icon {
+      @apply --anypoint-font-header5;
       position: absolute;
       right: 5px;
-      top: 4px;
+      top: 9px;
       margin-bottom: 0;
-
-      z-index: 110;
-      @apply --anypoint-font-header5;
+      /* z-index: 110; */
       color: var(--disabled-text-color);
       @apply --paper-dropdown-menu-icon;
     }
