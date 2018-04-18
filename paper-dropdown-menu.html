@@ -100,28 +100,21 @@ All rights reserved.
     /**
      * All of these styles below are for styling the fake-input display
      */
-    [slot="dropdown-trigger"] {
+    .dropdown-trigger {
       box-sizing: border-box;
-      position: relative;
       width: 100%;
+      @apply --layout-horizontal;
+      @apply --layout-center;
       @apply --paper-dropdown-trigger;
     }
 
-    :host([disabled]) [slot="dropdown-trigger"] {
+    :host([disabled]) .dropdown-trigger {
       pointer-events: none;
       opacity: var(--paper-dropdown-menu-disabled-opacity, 0.33);
     }
 
     .fake-input {
-      @apply --anypoint-font-body;
-      @apply --anypoint-font-common-nowrap;
-      line-height: 1.5;
       color: var(--paper-dropdown-menu-color, var(--primary-text-color));
-      width: 100%;
-      box-sizing: border-box;
-      padding: 10px 20px 10px 10px;
-      /* Right padding so that text doesn't overlap the icon */
-      outline: none;
       @apply --paper-dropdown-menu-input;
     }
 
@@ -129,11 +122,6 @@ All rights reserved.
       --shadow-elevation-2dp: {
         /* This is intentionally empty */
       };
-    }
-
-    .fake-input:dir(rtl) {
-      padding-right: 0px;
-      padding-left: 20px;
     }
 
     :host([disabled]) .fake-input {
@@ -146,19 +134,23 @@ All rights reserved.
       @apply --paper-dropdown-invalid-input;
     }
 
-    label {
+    label,
+    .fake-input {
       @apply --anypoint-font-body;
       @apply --anypoint-font-common-nowrap;
       display: block;
-      position: absolute;
-      left: 10px;
-      right: 5px;
-      top: 11px;
+      line-height: 1.5;
       box-sizing: border-box;
-      margin: 0;
-      padding-right: 20px;
-      /* Right padding so that text doesn't overlap the icon */
+      padding: 10px;
       text-align: left;
+      outline: none;
+    }
+
+    .fake-input:dir(rtl) {
+      text-align: rigth;
+    }
+
+    label {
       color: var(--paper-dropdown-menu-color, var(--secondary-text-color));
       @apply --paper-dropdown-menu-label;
     }
@@ -167,28 +159,23 @@ All rights reserved.
       color: var(--paper-dropdown-menu-label-opened-color, rgba(0, 0, 0, 0.24));
     }
 
-    label:dir(rtl) {
-      padding-right: 0px;
-      padding-left: 20px;
-    }
-
-    label.label-is-hidden {
-      visibility: hidden;
-    }
-
     iron-icon {
       @apply --anypoint-font-header5;
-      position: absolute;
-      right: 5px;
-      top: 9px;
       margin-bottom: 0;
+      margin-right: 10px;
+      display: block;
       color: var(--disabled-text-color);
       @apply --paper-dropdown-menu-icon;
     }
 
+    label:dir(rtl),
     iron-icon:dir(rtl) {
-      left: 0;
-      right: auto;
+      padding-right: 0px;
+      padding-left: 10px;
+    }
+
+    label.label-is-hidden {
+      display: none;
     }
 
     :host([opened]) iron-icon {
@@ -212,8 +199,12 @@ All rights reserved.
       close-on-activate
       allow-outside-scroll="[[allowOutsideScroll]]">
       <div class="dropdown-trigger" slot="dropdown-trigger">
-        <label class$="[[_computeLabelClass(hasContent, opened)]]">[[label]]</label>
-        <div id="input" class="fake-input" tabindex="-1">&nbsp;</div>
+        <template is="dom-if" if="[[_computeLabelVisible(hasContent, opened)]]">
+          <label class$="[[_computeLabelClass(hasContent, opened)]]">[[label]]</label>
+        </template>
+        <template is="dom-if" if="[[!_computeLabelVisible(hasContent, opened)]]">
+          <div class="fake-input" tabindex="-1">[[value]]</div>
+        </template>
         <iron-icon icon="paper-dropdown-menu:arrow-drop-down"></iron-icon>
       </div>
       <slot name="dropdown-content" slot="dropdown-content"></slot>
@@ -388,7 +379,8 @@ All rights reserved.
          * positioning the dropdown and may be changed if doing so reduces
          * the area of the dropdown falling outside of `fitInto`.
          */
-        dynamicAlign: Boolean
+        dynamicAlign: Boolean,
+        _renderValue: String
       };
     }
 
@@ -410,20 +402,6 @@ All rights reserved.
         this.$.menuButton = this.shadowRoot.querySelector('paper-menu-button');
       }
       return this.$.menuButton;
-    }
-
-    /**
-     * A reference to fake input container element
-     * @return {HTMLElement}
-     */
-    get input() {
-      if (!this.$) {
-        this.$ = {};
-      }
-      if (!this.$.input) {
-        this.$.input = this.shadowRoot.querySelector('fake-input');
-      }
-      return this.$.input;
     }
 
     constructor() {
@@ -548,14 +526,6 @@ All rights reserved.
       const e = this.contentElement;
       if (e) {
         e.setAttribute('aria-expanded', openState);
-        const input = this.input;
-        if (!openState || openState === 'false') {
-          if (input && this.value && !input.textContent.trim()) {
-            input.textContent = this.value;
-          }
-        } else {
-          input.innerHTML = '&nbsp;';
-        }
       }
       this.updateStyles();
     }
@@ -564,13 +534,12 @@ All rights reserved.
       return (hasContent && !opened) ? 'label-is-hidden' : '';
     }
 
-    _valueChanged() {
-      // Only update if it's actually different.
-      const input = this.input;
-      if (input && input.textContent !== this.value) {
-        input.textContent = this.value;
-      }
-      this._setHasContent(!!this.value);
+    _computeLabelVisible(hasContent, opened) {
+      return !hasContent || opened;
+    }
+
+    _valueChanged(value) {
+      this._setHasContent(!!value);
     }
   }
   window.customElements.define(PaperDropdownMenu.is, PaperDropdownMenu);
