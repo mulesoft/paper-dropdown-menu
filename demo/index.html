@@ -1,63 +1,83 @@
 <!doctype html>
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-
   <title>paper-dropdown-menu demo</title>
-
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-
+  <link rel="import" href="../../shadycss/apply-shim.html">
+  <link rel="import" href="../../polymer/lib/elements/custom-style.html">
   <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
   <link rel="import" href="../../paper-item/paper-item.html">
   <link rel="import" href="../../paper-listbox/paper-listbox.html">
   <link rel="import" href="../../paper-tabs/paper-tabs.html">
   <link rel="import" href="../paper-dropdown-menu.html">
-
-  <style is="custom-style" include="demo-pages-shared-styles">
-
-    .vertical-section-container {
-      max-width: 600px;
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+    :root {
+      --paper-item-min-height: 48px;
+      --paper-item: {
+        padding: 0px 10px;
+        border-left: 2px transparent solid;
+        border-right: 2px transparent solid;
+      };
+      --paper-item: {
+        padding: 0px 10px;
+        border-left: 2px transparent solid;
+        border-right: 2px transparent solid;
+        cursor: pointer;
+        border-left: 2px solid var(--anypoint-color-aluminum4);
+        border-right: 2px solid var(--anypoint-color-aluminum4);
+      };
+      --paper-item-hover: {
+        padding: 0px 10px;
+        color: var(--anypoint-color-coreBlue3);
+        border-left: 2px var(--anypoint-color-coreBlue3) solid;
+        border-right: 2px var(--anypoint-color-coreBlue3) solid;
+      };
+    }
+    paper-item:hover {
+      @apply --paper-item-hover;
     }
 
-  </style>
+    .color {
+      /* background-color: red;
+      color: #fff; */
+    }
+
+    .color2 {
+      /* background-color: #2196F3; */
+    }
+    </style>
+  </custom-style>
 </head>
 <body unresolved>
   <div class="vertical-section-container centered">
     <h4>This is a plain paper-dropdown-menu</h4>
     <demo-snippet>
       <template>
-        <paper-dropdown-menu label="Dinosaurs">
-          <paper-listbox class="dropdown-content">
-            <paper-item>allosaurus</paper-item>
-            <paper-item>brontosaurus</paper-item>
-            <paper-item>carcharodontosaurus</paper-item>
-            <paper-item>diplodocus</paper-item>
+        <paper-dropdown-menu class="color" label="Dinosaurs">
+          <paper-listbox slot="dropdown-content" class="color2">
+            <paper-item>Allosaurus</paper-item>
+            <paper-item>Brontosaurus</paper-item>
+            <paper-item>Carcharodontosaurus</paper-item>
+            <paper-item>Diplodocus</paper-item>
           </paper-listbox>
         </paper-dropdown-menu>
       </template>
     </demo-snippet>
 
     <h4>You can pre-select a value using the <i>selected</i> attribute</h4>
-    <demo-snippet class="centered-demo">
+    <demo-snippet>
       <template>
-        <paper-dropdown-menu label="Dinosaurs">
-          <paper-listbox class="dropdown-content" selected="1">
-            <paper-item>allosaurus</paper-item>
-            <paper-item>brontosaurus</paper-item>
-            <paper-item>carcharodontosaurus</paper-item>
-            <paper-item>diplodocus</paper-item>
+        <paper-dropdown-menu class="color" label="Dinosaurs">
+          <paper-listbox slot="dropdown-content" selected="1" class="color2">
+            <paper-item>Allosaurus</paper-item>
+            <paper-item>Brontosaurus</paper-item>
+            <paper-item>Carcharodontosaurus</paper-item>
+            <paper-item>Diplodocus</paper-item>
           </paper-listbox>
         </paper-dropdown-menu>
       </template>
@@ -67,8 +87,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <h4>You can change the direction in which the menu opens</h4>
     <demo-snippet class="centered-demo">
       <template>
-        <paper-dropdown-menu label="Upwards and to the left! With long label" vertical-align="bottom" horizontal-align="left">
-          <paper-listbox class="dropdown-content">
+        <paper-dropdown-menu label="Upwards and to the left! With long label" vertical-align="bottom" horizontal-align="left" class="color">
+          <paper-listbox slot="dropdown-content" class="color2">
             <paper-item>allosaurus</paper-item>
             <paper-item>brontosaurus</paper-item>
             <paper-item>carcharodontosaurus</paper-item>
@@ -83,7 +103,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <demo-snippet class="centered-demo">
       <template>
         <paper-dropdown-menu label="Disabled dinosaurs" disabled>
-          <paper-listbox class="dropdown-content">
+          <paper-listbox slot="dropdown-content">
+            <paper-item>allosaurus</paper-item>
+            <paper-item>brontosaurus</paper-item>
+            <paper-item>carcharodontosaurus</paper-item>
+            <paper-item>diplodocus</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </template>
+    </demo-snippet>
+
+    <h4>Right-to-left language</h4>
+    <demo-snippet class="centered-demo">
+      <template>
+        <paper-dropdown-menu label="Disabled dinosaurs" dir="rtl">
+          <paper-listbox slot="dropdown-content">
             <paper-item>allosaurus</paper-item>
             <paper-item>brontosaurus</paper-item>
             <paper-item>carcharodontosaurus</paper-item>
@@ -97,7 +131,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <demo-snippet class="centered-demo">
       <template>
         <paper-dropdown-menu label="Menu tabs!?">
-          <paper-tabs class="dropdown-content">
+          <paper-tabs slot="dropdown-content">
             <paper-tab>cheddar</paper-tab>
             <paper-tab>stilton</paper-tab>
             <paper-tab>emmental</paper-tab>
@@ -106,24 +140,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
     </demo-snippet>
 
-    <h4>You can remove the ripple and the animations</h4>
-    <demo-snippet class="centered-demo">
-      <template>
-        <paper-dropdown-menu label="Dinosaurs" noink no-animations>
-          <paper-listbox class="dropdown-content">
-            <paper-item>allosaurus</paper-item>
-            <paper-item>brontosaurus</paper-item>
-            <paper-item>carcharodontosaurus</paper-item>
-            <paper-item>diplodocus</paper-item>
-          </paper-listbox>
-        </paper-dropdown-menu>
-      </template>
-    </demo-snippet>
-
     <h4>You can style a paper-dropdown-menu using custom properties</h4>
     <demo-snippet class="centered-demo">
       <template>
-        <style is="custom-style">
+        <custom-style>
+          <style is="custom-style">
           paper-dropdown-menu.custom {
             --paper-input-container-label: {
               color: var(--paper-pink-500);
@@ -156,9 +177,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               border-bottom: none;
             }
           }
-        </style>
+          </style>
+        </custom-style>
         <paper-dropdown-menu class="custom" label="Custom" no-label-float>
-          <paper-listbox class="dropdown-content">
+          <paper-listbox slot="dropdown-content">
             <paper-item>allosaurus</paper-item>
             <paper-item>brontosaurus</paper-item>
             <paper-item>carcharodontosaurus</paper-item>

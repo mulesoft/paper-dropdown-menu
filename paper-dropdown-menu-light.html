@@ -1,91 +1,27 @@
 <!--
 @license
-Copyright 2017 The Advanced REST client authors <arc@mulesoft.com>
-Licensed under the Apache License, Version 2.0 (the "License"); you may not
-use this file except in compliance with the License. You may obtain a copy of
-the License at
-http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations under
-the License.
+Copyright 2017 Mulesoft.
+All rights reserved.
 -->
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/utils/render-status.html">
+<link rel="import" href="../shadycss/apply-shim.html">
 <link rel="import" href="../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 <link rel="import" href="../iron-behaviors/iron-button-state.html">
 <link rel="import" href="../iron-behaviors/iron-control-state.html">
-<link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
 <link rel="import" href="../paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../paper-styles/default-theme.html">
+<link rel="import" href="../anypoint-styles/typography.html">
+<link rel="import" href="../anypoint-styles/colors.html">
 <link rel="import" href="paper-dropdown-menu-icons.html">
-<!--
-# Anypoint styled version of the `paper-dropdown-menu-light` element.
-
-To be used with the API Console that must be styled for the platform.
-
-This is a faster, lighter version of `paper-dropdown-menu`, that does not
-use a `<paper-input>` internally. Use this element if you're concerned about
-the performance of this element, i.e., if you plan on using many dropdowns on
-the same page. Note that this element has a slightly different styling API
-than `paper-dropdown-menu`.
-`paper-dropdown-menu` is similar to a native browser select element.
-`paper-dropdown-menu` works with selectable content. The currently selected
-item is displayed in the control. If no item is selected, the `label` is
-displayed instead.
-
-Example:
-
-    <paper-dropdown-menu-light label="Your favourite pastry">
-      <paper-listbox class="dropdown-content">
-        <paper-item>Croissant</paper-item>
-        <paper-item>Donut</paper-item>
-        <paper-item>Financier</paper-item>
-        <paper-item>Madeleine</paper-item>
-      </paper-listbox>
-    </paper-dropdown-menu-light>
-
-This example renders a dropdown menu with 4 options.
-The child element with the class `dropdown-content` is used as the dropdown
-menu. This can be a [`paper-listbox`](paper-listbox), or any other or
-element that acts like an [`iron-selector`](iron-selector).
-Specifically, the menu child must fire an
-[`iron-select`](iron-selector#event-iron-select) event when one of its
-children is selected, and an [`iron-deselect`](iron-selector#event-iron-deselect)
-event when a child is deselected. The selected or deselected item must
-be passed as the event's `detail.item` property.
-Applications can listen for the `iron-select` and `iron-deselect` events
-to react when options are selected and deselected.
-
-### Styling
-The following custom properties and mixins are also available for styling:
-Custom property | Description | Default
-----------------|-------------|----------
-`--paper-dropdown-menu` | A mixin that is applied to the element host | `{}`
-`--paper-dropdown-menu-disabled` | A mixin that is applied to the element host when disabled | `{}`
-`--paper-dropdown-menu-disabled-opacity` | The opacity of the dropdown when disabled  | `0.33`
-`--paper-dropdown-menu-button` | A mixin that is applied to the internal menu button | `{}`
-`--paper-dropdown-menu-icon` | A mixin that is applied to the internal icon | `{}`
-`--paper-dropdown-menu-color` | The color of the input/label/underline when the dropdown is unfocused | `--primary-text-color`
-`--paper-dropdown-menu-focus-color` | The color of the label/underline when the dropdown is focused  | `--primary-color`
-`--paper-dropdown-error-color` | The color of the label/underline when the dropdown is invalid  | `--error-color`
-`--paper-dropdown-menu-label` | Mixin applied to the label | `{}`
-`--paper-dropdown-menu-input` | Mixin appled to the input | `{}`
-`--paper-dropdown-menu-border-color` | Color of the border of the dropdown when opened | `#cacbcc`
-`--paper-dropdown-menu-label-opened-color` | Color of the label when opened | `rgba(0, 0, 0, 0.24)`
-
-@element paper-dropdown-menu
-@demo demo/index.html
--->
-<dom-module id="paper-dropdown-menu-light">
+<dom-module id="paper-dropdown-menu">
   <template>
     <style>
     :host(:focus) {
       outline: none;
     }
-    /**/
+
     :host {
       /* Default size of an <input> */
       width: 200px;
@@ -98,11 +34,9 @@ Custom property | Description | Default
       border-top: 2px solid transparent;
       border-bottom: 2px solid transparent;
 
-      /* NOTE(cdata): Both values are needed, since some phones require the
-       * value to be `transparent`.
-       */
       -webkit-tap-highlight-color: rgba(0,0,0,0);
       -webkit-tap-highlight-color: transparent;
+      @apply --anypoint-font-common-base;
       @apply --paper-dropdown-menu;
 
       --paper-menu-button-dropdown: {
@@ -112,9 +46,9 @@ Custom property | Description | Default
       };
 
       --paper-menu-button-content: {
-        border-bottom: 2px solid var(--paper-dropdown-menu-border-color, #cacbcc);
-        border-left: 2px solid var(--paper-dropdown-menu-border-color, #cacbcc);
-        border-right: 2px solid var(--paper-dropdown-menu-border-color, #cacbcc);
+        border-bottom: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
+        border-left: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
+        border-right: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
       };
     }
 
@@ -123,20 +57,20 @@ Custom property | Description | Default
     }
 
     :host([opened]) {
-      border-right-color: var(--paper-dropdown-menu-border-color, #cacbcc);
-      border-left-color: var(--paper-dropdown-menu-border-color, #cacbcc);
-      border-top-color: var(--paper-dropdown-menu-border-color, #cacbcc);
+      border-right-color: var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
+      border-left-color: var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
+      border-top-color: var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
       @apply --paper-dropdown-menu-opened;
     }
 
     :host([opened][vertical-align="bottom"]) {
-      border-bottom-color: var(--paper-dropdown-menu-border-color, #cacbcc);
+      border-bottom-color: var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
       border-top-color: transparent;
 
       --paper-menu-button-content: {
-        border-top: 2px solid var(--paper-dropdown-menu-border-color, #cacbcc);
-        border-right: 2px solid var(--paper-dropdown-menu-border-color, #cacbcc);
-        border-left: 2px solid var(--paper-dropdown-menu-border-color, #cacbcc);
+        border-top: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
+        border-right: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
+        border-left: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
         border-bottom: 0px solid transparent;
       };
     }
@@ -152,7 +86,10 @@ Custom property | Description | Default
       @apply --paper-dropdown-menu-icon;
     }
 
-    .dropdown-trigger {
+    /**
+     * All of these styles below are for styling the fake-input display
+     */
+    [slot="dropdown-trigger"] {
       box-sizing: border-box;
       position: relative;
       width: 100%;
@@ -161,16 +98,16 @@ Custom property | Description | Default
       @apply --paper-dropdown-trigger;
     }
 
-    :host([disabled]) .dropdown-trigger {
+    :host([disabled]) [slot="dropdown-trigger"] {
       pointer-events: none;
       opacity: var(--paper-dropdown-menu-disabled-opacity, 0.33);
     }
 
     #input {
-      @apply --paper-font-subhead;
-      @apply --paper-font-common-nowrap;
+      @apply --anypoint-font-header5;
+      @apply --anypoint-font-common-nowrap;
       line-height: 1.5;
-      color: var(--paper-dropdown-menu-color, --primary-text-color);
+      color: var(--paper-dropdown-menu-color, var(--primary-text-color));
       width: 100%;
       box-sizing: border-box;
       padding: 0 20px 0 16px;
@@ -185,24 +122,24 @@ Custom property | Description | Default
       };
     }
 
-    :host-context([dir="rtl"]) #input {
+    #input:dir(rtl) {
       padding-right: 0px;
       padding-left: 20px;
     }
 
     :host([disabled]) #input {
-      border-bottom: 1px dashed var(--paper-dropdown-menu-color, --secondary-text-color);
+      border-bottom: 1px dashed var(--paper-dropdown-menu-color, var(--secondary-text-color));
       @apply --paper-dropdown-disabled-input;
     }
 
     :host([invalid]) #input {
-      border-bottom: 2px solid var(--paper-dropdown-error-color, --error-color);
+      border-bottom: 2px solid var(--paper-dropdown-error-color, var(--error-color));
       @apply --paper-dropdown-invalid-input;
     }
 
     label {
-      @apply --paper-font-subhead;
-      @apply --paper-font-common-nowrap;
+      @apply --anypoint-font-header5;
+      @apply --anypoint-font-common-nowrap;
       display: block;
       position: absolute;
       bottom: 0;
@@ -213,7 +150,7 @@ Custom property | Description | Default
       padding-right: 20px;
       /* Right padding so that text doesn't overlap the icon */
       text-align: left;
-      color: var(--paper-dropdown-menu-color, --secondary-text-color);
+      color: var(--paper-dropdown-menu-color, var(--secondary-text-color));
       @apply --paper-dropdown-menu-label;
     }
 
@@ -221,7 +158,7 @@ Custom property | Description | Default
       color: var(--paper-dropdown-menu-label-opened-color, rgba(0, 0, 0, 0.24));
     }
 
-    :host-context([dir="rtl"]) label {
+    label:dir(rtl) {
       padding-right: 0px;
       padding-left: 20px;
     }
@@ -236,12 +173,12 @@ Custom property | Description | Default
       bottom: 8px;
       margin-top: 0px;
       /* The container has an 8px bottom padding */
-      @apply --paper-font-subhead;
+      @apply --anypoint-font-header5;
       color: var(--disabled-text-color);
       @apply --paper-dropdown-menu-icon;
     }
 
-    :host-context([dir="rtl"]) iron-icon {
+    iron-icon:dir(rtl) {
       left: 0;
       right: auto;
     }
@@ -267,28 +204,91 @@ Custom property | Description | Default
       opened="{{opened}}"
       close-on-activate
       allow-outside-scroll="[[allowOutsideScroll]]">
-      <div class="dropdown-trigger">
-        <label class$="[[_computeLabelClass(hasContent, opened)]]">
-          [[label]]
-        </label>
+      <div class="dropdown-trigger" slot="dropdown-trigger">
+        <label class$="[[_computeLabelClass(hasContent, opened)]]">[[label]]</label>
         <div id="input" tabindex="-1">&nbsp;</div>
         <iron-icon icon="paper-dropdown-menu:arrow-drop-down"></iron-icon>
       </div>
-      <content id="content" select=".dropdown-content"></content>
+      <slot name="dropdown-content" slot="dropdown-content"></slot>
     </paper-menu-button>
   </template>
   <script>
-  (function() {
-    'use strict';
-    Polymer({
-      is: 'paper-dropdown-menu-light',
-      behaviors: [
-        Polymer.IronButtonState,
-        Polymer.IronControlState,
-        Polymer.IronFormElementBehavior,
-        Polymer.IronValidatableBehavior
-      ],
-      properties: {
+  /**
+   * # Anypoint styled version of the `paper-dropdown-menu` element.
+   *
+   * To be used with the API Console that must be styled for the platform.
+   *
+   * This is a faster, lighter version of `paper-dropdown-menu`, that does not
+   * use a `<paper-input>` internally. Use this element if you're concerned about
+   * the performance of this element, i.e., if you plan on using many dropdowns on
+   * the same page. Note that this element has a slightly different styling API
+   * than `paper-dropdown-menu`.
+   * `paper-dropdown-menu` is similar to a native browser select element.
+   * `paper-dropdown-menu` works with selectable content. The currently selected
+   * item is displayed in the control. If no item is selected, the `label` is
+   * displayed instead.
+   *
+   * Example:
+   *
+   *      <paper-dropdown-menu-light label="Your favourite pastry">
+   *        <paper-listbox class="dropdown-content">
+   *          <paper-item>Croissant</paper-item>
+   *          <paper-item>Donut</paper-item>
+   *          <paper-item>Financier</paper-item>
+   *          <paper-item>Madeleine</paper-item>
+   *        </paper-listbox>
+   *      </paper-dropdown-menu-light>
+   *
+   * This example renders a dropdown menu with 4 options.
+   * The child element with the class `dropdown-content` is used as the dropdown
+   * menu. This can be a [`paper-listbox`](paper-listbox), or any other or
+   * element that acts like an [`iron-selector`](iron-selector).
+   * Specifically, the menu child must fire an
+   * [`iron-select`](iron-selector#event-iron-select) event when one of its
+   * children is selected, and an [`iron-deselect`](iron-selector#event-iron-deselect)
+   * event when a child is deselected. The selected or deselected item must
+   * be passed as the event's `detail.item` property.
+   * Applications can listen for the `iron-select` and `iron-deselect` events
+   * to react when options are selected and deselected.
+   *
+   * ### Styling
+   *
+   * The following custom properties and mixins are also available for styling:
+   *
+   * Custom property | Description | Default
+   * ----------------|-------------|----------
+   * `--paper-dropdown-menu` | A mixin that is applied to the element host | `{}`
+   * `--paper-dropdown-menu-disabled` | A mixin that is applied to the element host when disabled | `{}`
+   * `--paper-dropdown-menu-disabled-opacity` | The opacity of the dropdown when disabled  | `0.33`
+   * `--paper-dropdown-menu-button` | A mixin that is applied to the internal menu button | `{}`
+   * `--paper-dropdown-menu-icon` | A mixin that is applied to the internal icon | `{}`
+   * `--paper-dropdown-menu-color` | The color of the input/label/underline when the dropdown is unfocused | `--primary-text-color`
+   * `--paper-dropdown-menu-focus-color` | The color of the label/underline when the dropdown is focused  | `--primary-color`
+   * `--paper-dropdown-error-color` | The color of the label/underline when the dropdown is invalid  | `--error-color`
+   * `--paper-dropdown-menu-label` | Mixin applied to the label | `{}`
+   * `--paper-dropdown-menu-input` | Mixin appled to the input | `{}`
+   * `--paper-dropdown-menu-border-color` | Color of the border of the dropdown when opened | `var(--anypoint-color-aluminum4)`
+   * `--paper-dropdown-menu-label-opened-color` | Color of the label when opened | `rgba(0, 0, 0, 0.24)`
+   *
+   * @customElement
+   * @polymer
+   * @demo demo/index.html
+   * @appliesMixin Polymer.IronButtonState
+   * @appliesMixin Polymer.IronControlState
+   * @appliesMixin Polymer.IronValidatableBehavior
+   * @appliesMixin Polymer.IronA11yKeysBehavior
+   * @memberof AnypointElements
+   */
+  class PaperDropdownMenuLight extends Polymer.mixinBehaviors([
+    Polymer.IronButtonState,
+    Polymer.IronControlState,
+    Polymer.IronValidatableBehavior,
+    Polymer.IronA11yKeysBehavior
+  ], Polymer.Element) {
+
+    static get is() { return 'paper-dropdown-menu-light'; }
+    static get properties() {
+      return {
         /**
          * The derived "label" of the currently selected item. This value
          * is the `label` property on the selected item if set, or else the
@@ -309,7 +309,8 @@ Custom property | Description | Default
         selectedItem: {
           type: Object,
           notify: true,
-          readOnly: true
+          readOnly: true,
+          observer: '_selectedItemChanged'
         },
         /**
          * The value for this element that will be used when submitting in
@@ -319,7 +320,6 @@ Custom property | Description | Default
         value: {
           type: String,
           notify: true,
-          readOnly: true,
           observer: '_valueChanged',
         },
         /**
@@ -381,151 +381,162 @@ Custom property | Description | Default
          * positioning the dropdown and may be changed if doing so reduces
          * the area of the dropdown falling outside of `fitInto`.
          */
-        dynamicAlign: {
-          type: Boolean
-        }
-      },
+        dynamicAlign: Boolean
+      };
+    }
 
-      listeners: {
-        'tap': '_onTap'
-      },
-
-      keyBindings: {
+    get keyBindings() {
+      return {
         'up down': 'open',
         'esc': 'close'
-      },
+      };
+    }
 
-      hostAttributes: {
-        tabindex: 0,
-        role: 'combobox',
-        'aria-autocomplete': 'none',
-        'aria-haspopup': 'true'
-      },
-
-      observers: [
-        '_selectedItemChanged(selectedItem)'
-      ],
-
-      attached: function() {
-        // NOTE(cdata): Due to timing, a preselected value in a `IronSelectable`
-        // child will cause an `iron-select` event to fire while the element is
-        // still in a `DocumentFragment`. This has the effect of causing
-        // handlers not to fire. So, we double check this value on attached:
-        var contentElement = this.contentElement;
-        if (contentElement && contentElement.selectedItem) {
-          this._setSelectedItem(contentElement.selectedItem);
-        }
-      },
-
-      ready: function() {
-        Polymer.RenderStatus.afterNextRender(this, function() {
-          this._styleButtonDropdown();
-        });
-      },
-      /**
-       * The content element that is contained by the dropdown menu, if any.
-       */
-      get contentElement() {
-        return Polymer.dom(this.$.content).getDistributedNodes()[0];
-      },
-      /**
-       * Show the dropdown content.
-       */
-      open: function() {
-        this.$.menuButton.open();
-      },
-      /**
-       * Hide the dropdown content.
-       */
-      close: function() {
-        this.$.menuButton.close();
-      },
-
-      _styleButtonDropdown: function() {
-        // var content = this.$.menuButton.$$('.dropdown-content');
-      },
-      /**
-       * A handler that is called when `iron-select` is fired.
-       *
-       * @param {CustomEvent} event An `iron-select` event.
-       */
-      _onIronSelect: function(event) {
-        this._setSelectedItem(event.detail.item);
-      },
-      /**
-       * A handler that is called when `iron-deselect` is fired.
-       *
-       * @param {CustomEvent} event An `iron-deselect` event.
-       */
-      _onIronDeselect: function() {
-        this._setSelectedItem(null);
-      },
-      /**
-       * A handler that is called when the dropdown is tapped.
-       *
-       * @param {CustomEvent} event A tap event.
-       */
-      _onTap: function(event) {
-        if (Polymer.Gestures.findOriginalTarget(event) === this) {
-          this.open();
-        }
-      },
-      /**
-       * Compute the label for the dropdown given a selected item.
-       *
-       * @param {Element} selectedItem A selected Element item, with an
-       * optional `label` property.
-       */
-      _selectedItemChanged: function(selectedItem) {
-        var value = '';
-        if (!selectedItem) {
-          value = '';
-        } else {
-          value = selectedItem.label || selectedItem.getAttribute('label') ||
-            selectedItem.textContent.trim();
-        }
-        this._setValue(value);
-        this._setSelectedItemLabel(value);
-      },
-      /**
-       * Returns false if the element is required and does not have a selection,
-       * and true otherwise.
-       * @param {*=} _value Ignored.
-       * @return {boolean} true if `required` is false, or if `required` is true
-       * and the element has a valid selection.
-       */
-      _getValidity: function() {
-        return this.disabled || !this.required || (this.required && !!this.value);
-      },
-
-      _openedChanged: function() {
-        var openState = this.opened ? 'true' : 'false';
-        var e = this.contentElement;
-        if (e) {
-          e.setAttribute('aria-expanded', openState);
-          if (!openState || openState === 'false') {
-            if (this.$.input && this.value && !this.$.input.textContent.trim()) {
-              this.$.input.textContent = this.value;
-            }
-          } else {
-            this.$.input.innerHTML = '&nbsp;';
-          }
-        }
-        this.updateStyles();
-      },
-
-      _computeLabelClass: function(hasContent, opened) {
-        return (hasContent && !opened) ? 'label-is-hidden' : '';
-      },
-
-      _valueChanged: function() {
-        // Only update if it's actually different.
-        if (this.$.input && this.$.input.textContent !== this.value) {
-          this.$.input.textContent = this.value;
-        }
-        this._setHasContent(!!this.value);
+    constructor() {
+      super();
+      this._clickHandler = this._clickHandler.bind(this);
+    }
+    /**
+     * Ensures attributes and registers listeners.
+     */
+    connectedCallback() {
+      super.connectedCallback();
+      Polymer.RenderStatus.afterNextRender(this, () => {
+        this.addEventListener('click', this._clickHandler);
+      });
+      if (!this.hasAttribute('role')) {
+        this.setAttribute('role', 'combobox');
       }
-    });
-  })();
+      if (!this.hasAttribute('tabindex')) {
+        this.setAttribute('tabindex', '0');
+      }
+      if (!this.hasAttribute('aria-autocomplete')) {
+        this.setAttribute('aria-autocomplete', 'none');
+      }
+      if (!this.hasAttribute('aria-haspopup')) {
+        this.setAttribute('aria-haspopup', 'true');
+      }
+      // NOTE(cdata): Due to timing, a preselected value in a `IronSelectable`
+      // child will cause an `iron-select` event to fire while the element is
+      // still in a `DocumentFragment`. This has the effect of causing
+      // handlers not to fire. So, we double check this value on attached:
+      const contentElement = this.contentElement;
+      if (contentElement && contentElement.selectedItem) {
+        this._setSelectedItem(contentElement.selectedItem);
+      }
+    }
+    /**
+     * Removes listeners
+     */
+    disconnectedCallback() {
+      super.disconnectedCallback();
+      this.removeEventListener('click', this._clickHandler);
+    }
+
+    /**
+     * The content element that is contained by the dropdown menu, if any.
+     */
+    get contentElement() {
+      const nodes = this.shadowRoot.querySelector('slot[slot="dropdown-content"]').assignedNodes();
+      for (let i = 0, l = nodes.length; i < l; i++) {
+        if (nodes[i].nodeType === Node.ELEMENT_NODE) {
+          return nodes[i];
+        }
+      }
+    }
+
+    _clickHandler(e) {
+      if (e.composedPath()[0] === this) {
+        this.open();
+      }
+    }
+
+    /**
+     * Show the dropdown content.
+     */
+    open() {
+      this.$.menuButton.open();
+    }
+    /**
+     * Hide the dropdown content.
+     */
+    close() {
+      this.$.menuButton.close();
+    }
+    /**
+     * A handler that is called when `iron-select` is fired.
+     *
+     * @param {CustomEvent} e An `iron-select` event.
+     */
+    _onIronSelect(e) {
+      this._setSelectedItem(e.detail.item);
+    }
+
+    /**
+     * A handler that is called when `iron-deselect` is fired.
+     *
+     * @param {CustomEvent} event An `iron-deselect` event.
+     */
+    _onIronDeselect() {
+      this._setSelectedItem(null);
+    }
+
+    /**
+     * Compute the label for the dropdown given a selected item.
+     *
+     * @param {Element} selectedItem A selected Element item, with an
+     * optional `label` property.
+     */
+    _selectedItemChanged(selectedItem) {
+      let value = '';
+      if (!selectedItem) {
+        value = '';
+      } else {
+        value = selectedItem.label || selectedItem.getAttribute('label') ||
+          selectedItem.textContent.trim();
+      }
+      this.value = value;
+      this._setSelectedItemLabel(value);
+    }
+    /**
+     * Returns false if the element is required and does not have a selection,
+     * and true otherwise.
+     *
+     * @return {boolean} true if `required` is false, or if `required` is true
+     * and the element has a valid selection.
+     */
+    _getValidity() {
+      return this.disabled || !this.required || (this.required && !!this.value);
+    }
+
+    _openedChanged() {
+      const openState = this.opened ? 'true' : 'false';
+      const e = this.contentElement;
+      if (e) {
+        e.setAttribute('aria-expanded', openState);
+        if (!openState || openState === 'false') {
+          if (this.$.input && this.value && !this.$.input.textContent.trim()) {
+            this.$.input.textContent = this.value;
+          }
+        } else {
+          this.$.input.innerHTML = '&nbsp;';
+        }
+      }
+      this.updateStyles();
+    }
+
+    _computeLabelClass(hasContent, opened) {
+      return (hasContent && !opened) ? 'label-is-hidden' : '';
+    }
+
+    _valueChanged() {
+      // Only update if it's actually different.
+      if (this.$.input && this.$.input.textContent !== this.value) {
+        this.$.input.textContent = this.value;
+      }
+      this._setHasContent(!!this.value);
+    }
+  }
+  window.customElements.define(PaperDropdownMenuLight.is, PaperDropdownMenuLight);
   </script>
 </dom-module>
