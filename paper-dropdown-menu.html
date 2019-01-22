@@ -60,6 +60,7 @@ All rights reserved.
       --paper-menu-button-content: {
         border-bottom: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
         top: 20px !important;
+        margin-top: -12px !important;
       };
     }
 
@@ -68,30 +69,20 @@ All rights reserved.
     }
 
     :host([opened]) {
-      border-right-color: var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
-      border-left-color: var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
-      border-top-color: var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
       @apply --paper-dropdown-menu-opened;
     }
 
     :host([opened][vertical-align="bottom"]) {
-      border-bottom-color: var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
-      border-top: none !important;
       --paper-menu-button-content: {
         border-top: 2px solid var(--paper-dropdown-menu-border-color, var(--anypoint-color-aluminum4));
         border-bottom: 0px solid transparent;
+        margin-top: 20px !important;
         top: -18px !important;
       };
     }
 
-    :host(:hover) label,
-    :host(:hover) .fake-input,
-    :host(:hover:not([opened])) .dropdown-trigger > iron-icon {
-      color: var(--anypoint-color-primary);
-      cursor: pointer;
-    }
-
     paper-menu-button {
+      cursor: pointer;
       display: block;
       padding: 0;
       @apply --paper-dropdown-menu-button;
@@ -114,6 +105,7 @@ All rights reserved.
     }
 
     .fake-input {
+      padding: 10px;
       color: var(--paper-dropdown-menu-color, var(--primary-text-color));
       @apply --paper-dropdown-menu-input;
     }
@@ -138,10 +130,10 @@ All rights reserved.
     .fake-input {
       @apply --anypoint-font-body;
       @apply --anypoint-font-common-nowrap;
+      @apply --layout-flex;
       display: block;
       line-height: 1.5;
       box-sizing: border-box;
-      padding: 10px;
       text-align: left;
       outline: none;
     }
@@ -151,15 +143,21 @@ All rights reserved.
     }
 
     label {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 10px;
+      box-sizing: border-box;
       color: var(--paper-dropdown-menu-color, var(--secondary-text-color));
       @apply --paper-dropdown-menu-label;
     }
 
-    :host([opened]) label {
-      color: var(--paper-dropdown-menu-label-opened-color, rgba(0, 0, 0, 0.24));
+    label.default-value {
+      padding: 10px;
+      margin: 0;
     }
 
-    iron-icon {
+    .trigger-icon {
       @apply --anypoint-font-header5;
       margin-bottom: 0;
       margin-right: 10px;
@@ -168,47 +166,60 @@ All rights reserved.
       @apply --paper-dropdown-menu-icon;
     }
 
-    label:dir(rtl),
-    iron-icon:dir(rtl) {
+    .trigger-icon:dir(rtl) {
       padding-right: 0px;
       padding-left: 10px;
     }
 
-    label.label-is-hidden {
-      display: none;
-    }
-
-    :host([opened]) iron-icon {
+    :host([opened]) .trigger-icon {
       -webkit-transform: rotate(180deg);
       transform: rotate(180deg);
       color: var(--paper-dropdown-menu-label-opened-color, rgba(0, 0, 0, 0.24));
     }
+
+    .input-wrapper {
+      position: relative;
+      border-left: 2px var(--paper-input-container-border-color, var(--anypoint-color-aluminum4)) solid;
+      border-right: 2px var(--paper-input-container-border-color, var(--anypoint-color-aluminum4)) solid;
+      height: inherit;
+      background-color: var(--anypoint-color-aluminum2);
+      -webkit-transition: background-color .2s ease-out;
+      transition: background-color .2s ease-out;
+    }
+
+    :host(:hover) .input-wrapper {
+      background-color: var(--anypoint-color-aluminum1);
+      border-color: var(--anypoint-color-aluminum5);
+    }
     </style>
     <!-- this div fulfills an a11y requirement for combobox, do not remove -->
     <span role="button"></span>
-    <paper-menu-button
-      vertical-align="[[verticalAlign]]"
-      horizontal-align="[[horizontalAlign]]"
-      vertical-offset="32"
-      dynamic-align="[[dynamicAlign]]"
-      disabled="[[disabled]]"
-      no-animations
-      on-iron-select="_onIronSelect"
-      on-iron-deselect="_onIronDeselect"
-      opened="{{opened}}"
-      close-on-activate
-      allow-outside-scroll="[[allowOutsideScroll]]">
-      <div class="dropdown-trigger" slot="dropdown-trigger">
-        <template is="dom-if" if="[[_computeLabelVisible(hasContent, opened)]]">
-          <label class$="[[_computeLabelClass(hasContent, opened)]]">[[label]]</label>
-        </template>
-        <template is="dom-if" if="[[!_computeLabelVisible(hasContent, opened)]]">
-          <div class="fake-input" tabindex="-1">[[value]]</div>
-        </template>
-        <iron-icon icon="paper-dropdown-menu:arrow-drop-down"></iron-icon>
-      </div>
-      <slot name="dropdown-content" slot="dropdown-content"></slot>
-    </paper-menu-button>
+    <label>[[label]]</label>
+    <div class="input-wrapper">
+      <paper-menu-button
+        vertical-align="[[verticalAlign]]"
+        horizontal-align="[[horizontalAlign]]"
+        vertical-offset="32"
+        dynamic-align="[[dynamicAlign]]"
+        disabled="[[disabled]]"
+        no-animations
+        on-iron-select="_onIronSelect"
+        on-iron-deselect="_onIronDeselect"
+        opened="{{opened}}"
+        close-on-activate
+        allow-outside-scroll="[[allowOutsideScroll]]">
+        <div class="dropdown-trigger" slot="dropdown-trigger">
+          <template is="dom-if" if="[[_computeLabelVisible(hasContent, opened)]]">
+            <label class="default-value">Select value</label>
+          </template>
+          <template is="dom-if" if="[[!_computeLabelVisible(hasContent, opened)]]">
+            <div class="fake-input" tabindex="-1">[[value]]</div>
+          </template>
+          <iron-icon class="trigger-icon" icon="paper-dropdown-menu:arrow-drop-down"></iron-icon>
+        </div>
+        <slot name="dropdown-content" slot="dropdown-content"></slot>
+      </paper-menu-button>
+    </div>
   </template>
   <script>
   /**
@@ -371,6 +382,7 @@ All rights reserved.
         },
         hasContent: {
           type: Boolean,
+          value: false,
           readOnly: true
         },
         /**
@@ -529,13 +541,12 @@ All rights reserved.
       }
       this.updateStyles();
     }
-
-    _computeLabelClass(hasContent, opened) {
-      return (hasContent && !opened) ? 'label-is-hidden' : '';
-    }
-
     _computeLabelVisible(hasContent, opened) {
       return !hasContent || opened;
+    }
+
+    _computeDefaultVisible(hasContent) {
+      return !hasContent;
     }
 
     _valueChanged(value) {

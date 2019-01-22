@@ -5,7 +5,7 @@
   "license": "(C) MuleSoft. All rights reserved.",
   "author": "Pawel Psztyc",
   "devDependencies": {
-    "@polymer/gen-typescript-declarations": "^1.1.1"
+    "@polymer/gen-typescript-declarations": "^1.6.0"
   },
   "private": true,
   "main": "paper-dropdown-menu.html",
