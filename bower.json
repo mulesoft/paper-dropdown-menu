@@ -1,7 +1,7 @@
 {
   "name": "paper-dropdown-menu",
   "description": "An anypoint styled version of the paper-dropdown-menu element",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "(C) MuleSoft. All rights reserved.",
   "author": "Pawel Psztyc",
   "keywords": [
